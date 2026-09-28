@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Birthday Surprise 🎂</title>
+
+<style>
+
+/* =========================
+   BASIC
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: linear-gradient(135deg, #ffd6e7, #fff5f9);
+    color: #5a2940;
+    overflow-x: hidden;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.screen {
+    min-height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.main-btn {
+    border: none;
+    background: #d95c91;
+    color: white;
+    padding: 14px 27px;
+    border-radius: 30px;
+    font-size: 17px;
+    margin: 7px;
+    box-shadow: 0 7px 18px rgba(160, 50, 100, 0.2);
+    transition: 0.25s;
+}
+
+.main-btn:hover {
+    transform: translateY(-3px) scale(1.04);
+    background: #c8497e;
+}
+
+.main-btn:active {
+    transform: scale(0.96);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================
+   WELCOME
+========================= */
+
+.welcome-box {
+    width: min(650px, 95vw);
+    background: rgba(255,255,255,0.94);
+    padding: 45px 25px;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(90,40,60,0.2);
+}
+
+.welcome-box h1 {
+    font-size: clamp(40px, 8vw, 70px);
+    margin: 0 0 20px;
+}
+
+.welcome-box p {
+    font-size: 21px;
+    line-height: 1.6;
+}
+
+/* =========================
+   BOOK
+========================= */
+
+#bookScreen {
+    padding: 20px;
+}
+
+.book {
+    position: relative;
+    width: min(900px, 95vw);
+    min-height: 700px;
+    background: #fffafc;
+    border: 8px solid #efbdd0;
+    border-radius: 20px;
+    box-shadow: 0 25px 70px rgba(80,30,50,0.25);
+    overflow: hidden;
+}
+
+.page {
+    display: none;
+    min-height: 690px;
+    padding: 45px 35px 100px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    animation: pageTurn 0.65s ease;
+}
+
+.page.active {
+    display: flex;
+}
+
+@keyframes pageTurn {
+
+    0% {
+        opacity: 0;
+        transform: rotateY(-25deg) translateX(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotateY(0deg) translateX(0);
+    }
+
+}
+
+.page h2 {
+    font-size: clamp(28px, 5vw, 42px);
+    margin: 10px;
+}
+
+.page p {
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+.book-photo {
+    width: min(700px, 92%);
+    height: 450px;
+    object-fit: contain;
+    background: #f8e7ee;
+    border: 6px solid white;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(80,30,50,0.25);
+    margin: 20px auto;
+}
+
+.book-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-btn {
+    border: none;
+    background: #e28aac;
+    color: white;
+    padding: 11px 22px;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.page-number {
+    color: #8b5268;
+}
+
+/* =========================
+   CAKE GAME
+========================= */
+
+.cake-game {
+    width: min(850px, 95vw);
+    background: rgba(255,255,255,0.95);
+    padding: 30px 20px;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(90,40,60,0.25);
+}
+
+.cake-game h1 {
+    font-size: clamp(35px, 7vw, 60px);
+    margin: 5px 0;
+}
+
+.cake-game p {
+    font-size: 20px;
+}
+
+.cake-scene {
+    position: relative;
+    width: min(620px, 96%);
+    height: 410px;
+    margin: 10px auto;
+}
+
+/* CAKE */
+
+.animated-cake {
+    position: absolute;
+    width: 330px;
+    left: 50%;
+    bottom: 35px;
+    transform: translateX(-50%);
+    animation: cakeAppear 1.4s ease forwards;
+}
+
+.plate {
+    position: absolute;
+    width: 400px;
+    height: 28px;
+    bottom: -15px;
+    left: -35px;
+    background: #e9e9e9;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.cake-bottom {
+    width: 330px;
+    height: 105px;
+    background: #d982a7;
+    border-radius: 18px 18px 35px 35px;
+    box-shadow: inset 0 -15px rgba(120,50,80,0.12);
+}
+
+.cake-middle {
+    width: 290px;
+    height: 78px;
+    margin: -12px auto 0;
+    background: #f5b4cd;
+    border-radius: 18px;
+    position: relative;
+    z-index: 2;
+}
+
+.cake-top {
+    width: 300px;
+    height: 75px;
+    margin: 0 auto -15px;
+    background: #fff0f6;
+    border-radius: 50%;
+    position: relative;
+    z-index: 4;
+    box-shadow: 0 8px #e69cba;
+}
+
+.sprinkles {
+    font-size: 22px;
+    padding-top: 20px;
+}
+
+@keyframes cakeAppear {
+
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(120px) scale(0.4);
+    }
+
+    70% {
+        transform: translateX(-50%) translateY(-8px) scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+}
+
+/* =========================
+   CANDLES
+========================= */
+
+.candles {
+    position: absolute;
+    width: 260px;
+    height: 160px;
+    left: 50%;
+    bottom: 190px;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    z-index: 10;
+}
+
+.candle {
+    position: relative;
+    width: 28px;
+    height: 100px;
+}
+
+.stick {
+    position: absolute;
+    bottom: 0;
+    width: 25px;
+    height: 78px;
+    background: repeating-linear-gradient(
+        45deg,
+        white 0px,
+        white 8px,
+        #df78a2 8px,
+        #df78a2 14px
+    );
+    border-radius: 5px;
+}
+
+.flame {
+    position: absolute;
+    top: -38px;
+    left: -5px;
+    font-size: 35px;
+    opacity: 0;
+    transform: scale(0);
+}
+
+.candle.lit .flame {
+    opacity: 1;
+    transform: scale(1);
+    animation: flicker 0.45s infinite alternate;
+}
+
+@keyframes flicker {
+
+    from {
+        transform: scale(0.9) rotate(-5deg);
+    }
+
+    to {
+        transform: scale(1.12) rotate(5deg);
+    }
+
+}
+
+/* Candle wobble */
+
+.candle.wobble {
+    animation: wobble 0.5s ease;
+}
+
+@keyframes wobble {
+
+    0%, 100% {
+        transform: rotate(0);
+    }
+
+    25% {
+        transform: rotate(-12deg);
+    }
+
+    75% {
+        transform: rotate(12deg);
+    }
+
+}
+
+/* =========================
+   CAKE CUTTING
+========================= */
+
+.cake-cut {
+    animation: cakeCut 1.2s ease forwards !important;
+}
+
+@keyframes cakeCut {
+
+    0% {
+        transform: translateX(-50%) rotate(0);
+    }
+
+    40% {
+        transform: translateX(-50%) rotate(-5deg);
+    }
+
+    100% {
+        transform: translateX(-50%) translateX(-45px) rotate(-8deg);
+    }
+
+}
+
+/* =========================
+   KNIFE
+========================= */
+
+.knife {
+    position: absolute;
+    z-index: 20;
+    font-size: 65px;
+    top: 40px;
+    left: 50%;
+    opacity: 0;
+    transform: translateX(120px) rotate(-35deg);
+}
+
+.knife.cut-animation {
+    opacity: 1;
+    animation: knifeCut 1.2s ease forwards;
+}
+
+@keyframes knifeCut {
+
+    0% {
+        transform: translateX(120px) rotate(-35deg);
+    }
+
+    50% {
+        transform: translateX(-10px) rotate(-70deg);
+    }
+
+    100% {
+        transform: translateX(-50px) rotate(-75deg);
+    }
+
+}
+
+/* =========================
+   CAKE PIECE
+========================= */
+
+.cake-piece {
+    position: absolute;
+    left: 50%;
+    bottom: 90px;
+    font-size: 70px;
+    opacity: 0;
+    z-index: 15;
+}
+
+.cake-piece.move {
+    animation: pieceMove 1.5s ease forwards;
+}
+
+@keyframes pieceMove {
+
+    0% {
+        opacity: 0;
+        transform: translateX(-50%);
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(160px) translateY(-25px) rotate(10deg);
+    }
+
+}
+
+/* =========================
+   BALLOONS
+========================= */
+
+.balloon {
+    position: fixed;
+    bottom: -120px;
+    font-size: 65px;
+    z-index: 30;
+    animation: balloonUp 6s linear forwards;
+    pointer-events: none;
+}
+
+@keyframes balloonUp {
+
+    0% {
+        transform: translateY(0) rotate(-5deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-120vh) rotate(15deg);
+        opacity: 0;
+    }
+
+}
+
+/* =========================
+   CONFETTI
+========================= */
+
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 18px;
+    z-index: 50;
+    animation: confettiFall 4s linear forwards;
+    pointer-events: none;
+}
+
+@keyframes confettiFall {
+
+    to {
+        transform: translateY(110vh) rotate(720deg);
+    }
+
+}
+
+/* =========================
+   HEARTS
+========================= */
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    font-size: 27px;
+    z-index: 40;
+    animation: heartUp 5s linear forwards;
+    pointer-events: none;
+}
+
+@keyframes heartUp {
+
+    to {
+        transform: translateY(-110vh);
+        opacity: 0;
+    }
+
+}
+
+/* =========================
+   FINAL SCREEN
+========================= */
+
+#finalScreen {
+    overflow: hidden;
+}
+
+.final-box {
+    width: min(750px, 95vw);
+    background: rgba(255,255,255,0.95);
+    padding: 45px 25px;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(80,30,50,0.25);
+    position: relative;
+    z-index: 100;
+}
+
+.final-box h1 {
+    font-size: clamp(40px, 8vw, 75px);
+    margin: 0 0 25px;
+}
+
+.typewriter {
+    font-size: 23px;
+    line-height: 1.7;
+    min-height: 100px;
+}
+
+.cursor {
+    display: inline-block;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+
+    50% {
+        opacity: 0;
+    }
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .book {
+        min-height: 620px;
+    }
+
+    .page {
+        min-height: 610px;
+        padding: 30px 12px 90px;
+    }
+
+    .book-photo {
+        width: 96%;
+        height: 340px;
+    }
+
+    .cake-scene {
+        height: 360px;
+    }
+
+    .animated-cake {
+        transform: translateX(-50%) scale(0.78);
+        transform-origin: bottom center;
+    }
+
+    .candles {
+        transform: translateX(-50%) scale(0.8);
+        transform-origin: bottom center;
+    }
+
+    .cake-game {
+        padding: 25px 10px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     WELCOME
+================================================== -->
+
+<section id="welcomeScreen" class="screen active">
+
+    <div class="welcome-box">
+
+        <h1>🎂 Happy Birthday! 🎉</h1>
+
+        <p>
+            I made a little birthday surprise for you...
+            💗
+        </p>
+
+        <button class="main-btn" onclick="startBook()">
+            Thank You 💕
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     PHOTO BOOK
+================================================== -->
+
+<section id="bookScreen" class="screen">
+
+    <div class="book">
+
+
+        <!-- PAGE 1 -->
+
+        <div class="page active">
+
+            <h2>📖 A Little Birthday Book</h2>
+
+            <p>
+                Before the main surprise...
+            </p>
+
+            <p>
+                Let's go through some memories. 💗
+            </p>
+
+        </div>
+
+
+        <!-- PAGE 2 -->
+
+        <div class="page">
+
+            <h2>Memory 1 🌸</h2>
+
+            <img
+                src="photos/photo1.jpg"
+                class="book-photo"
+                alt="Birthday memory 1"
+            >
+
+        </div>
+
+
+        <!-- PAGE 3 -->
+
+        <div class="page">
+
+            <h2>Memory 2 ✨</h2>
+
+            <img
+                src="photos/photo2.jpg"
+                class="book-photo"
+                alt="Birthday memory 2"
+            >
+
+        </div>
+
+
+        <!-- PAGE 4 -->
+
+        <div class="page">
+
+            <h2>Memory 3 🦋</h2>
+
+            <img
+                src="photos/photo3.jpg"
+                class="book-photo"
+                alt="Birthday memory 3"
+            >
+
+        </div>
+
+
+        <!-- PAGE 5 -->
+
+        <div class="page">
+
+            <h2>Memory 4 🌷</h2>
+
+            <img
+                src="photos/photo4.jpg"
+                class="book-photo"
+                alt="Birthday memory 4"
+            >
+
+        </div>
+
+
+        <!-- PAGE 6 -->
+
+        <div class="page">
+
+            <h2>Memory 5 🎀</h2>
+
+            <img
+                src="photos/photo5.jpg"
+                class="book-photo"
+                alt="Birthday memory 5"
+            >
+
+        </div>
+
+
+        <!-- PAGE 7 -->
+
+        <div class="page">
+
+            <h2>Memory 6 💕</h2>
+
+            <img
+                src="photos/photo6.jpg"
+                class="book-photo"
+                alt="Birthday memory 6"
+            >
+
+        </div>
+
+
+        <!-- PAGE 8 -->
+
+        <div class="page">
+
+            <h2>Memory 7 🌺</h2>
+
+            <img
+                src="photos/photo7.jpg"
+                class="book-photo"
+                alt="Birthday memory 7"
+            >
+
+        </div>
+
+
+        <!-- PAGE 9 -->
+
+        <div class="page">
+
+            <h2>🎁 One Last Thing...</h2>
+
+            <p>
+                Your final surprise is waiting.
+            </p>
+
+            <button class="main-btn" onclick="openCake()">
+                Open Surprise 🎁
+            </button>
+
+        </div>
+
+
+        <!-- CONTROLS -->
+
+        <div class="book-controls">
+
+            <button class="nav-btn" onclick="previousPage()">
+                ← Back
+            </button>
+
+            <span id="pageNumber" class="page-number">
+                1 / 9
+            </span>
+
+            <button class="nav-btn" onclick="nextPage()">
+                Next →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     INTERACTIVE CAKE
+================================================== -->
+
+<section id="cakeScreen" class="screen">
+
+    <div class="cake-game">
+
+        <h1>🎁 The Birthday Cake 🎂</h1>
+
+        <p id="cakeMessage">
+            Your cake is waiting...
+        </p>
+
+
+        <div class="cake-scene">
+
+
+            <!-- KNIFE -->
+
+            <div id="knife" class="knife">
+                🔪
+            </div>
+
+
+            <!-- CAKE PIECE -->
+
+            <div id="cakePiece" class="cake-piece">
+                🍰
+            </div>
+
+
+            <!-- CANDLES -->
+
+            <div id="candles" class="candles">
+
+                <div class="candle">
+                    <div class="flame">🔥</div>
+                    <div class="stick"></div>
+                </div>
+
+                <div class="candle">
+                    <div class="flame">🔥</div>
+                    <div class="stick"></div>
+                </div>
+
+                <div class="candle">
+                    <div class="flame">🔥</div>
+                    <div class="stick"></div>
+                </div>
+
+                <div class="candle">
+                    <div class="flame">🔥</div>
+                    <div class="stick"></div>
+                </div>
+
+                <div class="candle">
+                    <div class="flame">🔥</div>
+                    <div class="stick"></div>
+                </div>
+
+            </div>
+
+
+            <!-- CAKE -->
+
+            <div id="cake" class="animated-cake">
+
+                <div class="cake-top">
+
+                    <div class="sprinkles">
+                        ✨ ✦ ✨ ✦ ✨
+                    </div>
+
+                </div>
+
+                <div class="cake-middle"></div>
+
+                <div class="cake-bottom"></div>
+
+                <div class="plate"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTROLS -->
+
+        <div>
+
+            <button
+                id="lightButton"
+                class="main-btn"
+                onclick="lightCandles()">
+
+                🔥 Light the Candles
+
+            </button>
+
+
+            <button
+                id="wishButton"
+                class="main-btn hidden"
+                onclick="makeWish()">
+
+                ✨ Make a Wish
+
+            </button>
+
+
+            <button
+                id="blowButton"
+                class="main-btn hidden"
+                onclick="blowCandles()">
+
+                💨 Blow the Candles
+
+            </button>
+
+
+            <button
+                id="cutButton"
+                class="main-btn hidden"
+                onclick="cutCake()">
+
+                🔪 Cut the Cake
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     FINAL
+================================================== -->
+
+<section id="finalScreen" class="screen">
+
+    <div class="final-box">
+
+        <h1>
+            🎉 HAPPY BIRTHDAY! 🎉
+        </h1>
+
+        <div class="typewriter">
+
+            <span id="birthdayMessage"></span>
+            <span class="cursor">|</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+/* ==================================================
+   SCREEN SYSTEM
+================================================== */
+
+function showScreen(id) {
+
+    document.querySelectorAll(".screen").forEach(function(screen) {
+
+        screen.classList.remove("active");
+
+    });
+
+    document.getElementById(id).classList.add("active");
+
+}
+
+
+/* ==================================================
+   START
+================================================== */
+
+function startBook() {
+
+    showScreen("bookScreen");
+
+}
+
+
+/* ==================================================
+   BOOK
+================================================== */
+
+let currentPage = 0;
+
+const pages = document.querySelectorAll(".page");
+
+function updatePage() {
+
+    pages.forEach(function(page, index) {
+
+        page.classList.remove("active");
+
+        if (index === currentPage) {
+
+            page.classList.add("active");
+
+        }
+
+    });
+
+    document.getElementById("pageNumber").textContent =
+        (currentPage + 1) + " / " + pages.length;
+
+}
+
+
+function nextPage() {
+
+    if (currentPage < pages.length - 1) {
+
+        currentPage++;
+
+        updatePage();
+
+    }
+
+}
+
+
+function previousPage() {
+
+    if (currentPage > 0) {
+
+        currentPage--;
+
+        updatePage();
+
+    }
+
+}
+
+
+/* ==================================================
+   OPEN CAKE
+================================================== */
+
+function openCake() {
+
+    showScreen("cakeScreen");
+
+    document.getElementById("cakeMessage").textContent =
+        "Your birthday cake is ready! 🎂";
+
+}
+
+
+/* ==================================================
+   LIGHT CANDLES
+================================================== */
+
+function lightCandles() {
+
+    const candles =
+        document.querySelectorAll(".candle");
+
+    candles.forEach(function(candle, index) {
+
+        setTimeout(function() {
+
+            candle.classList.add("lit");
+
+        }, index * 300);
+
+    });
+
+    document.getElementById("lightButton")
+        .classList.add("hidden");
+
+
+    setTimeout(function() {
+
+        document.getElementById("cakeMessage").textContent =
+            "Look at those candles! ✨";
+
+        document.getElementById("wishButton")
+            .classList.remove("hidden");
+
+    }, 1800);
+
+}
+
+
+/* ==================================================
+   MAKE A WISH
+================================================== */
+
+function makeWish() {
+
+    document.getElementById("wishButton")
+        .classList.add("hidden");
+
+    document.getElementById("cakeMessage").textContent =
+        "Close your eyes... make a wish... ✨";
+
+    setTimeout(function() {
+
+        document.getElementById("cakeMessage").textContent =
+            "Now blow out the candles! 💨";
+
+        document.getElementById("blowButton")
+            .classList.remove("hidden");
+
+    }, 1800);
+
+}
+
+
+/* ==================================================
+   BLOW CANDLES
+================================================== */
+
+function blowCandles() {
+
+    const candles =
+        document.querySelectorAll(".candle");
+
+    candles.forEach(function(candle, index) {
+
+        setTimeout(function() {
+
+            candle.classList.add("wobble");
+
+        }, index * 120);
+
+        setTimeout(function() {
+
+            candle.classList.remove("lit");
+
+        }, 400 + index * 120);
+
+    });
+
+    document.getElementById("blowButton")
+        .classList.add("hidden");
+
+    document.getElementById("cakeMessage").textContent =
+        "🎉 The candles are out! 🎉";
+
+    createConfetti();
+
+    setTimeout(function() {
+
+        document.getElementById("cutButton")
+            .classList.remove("hidden");
+
+    }, 1500);
+
+}
+
+
+/* ==================================================
+   CUT CAKE
+================================================== */
+
+function cutCake() {
+
+    document.getElementById("cutButton")
+        .classList.add("hidden");
+
+    document.getElementById("cakeMessage").textContent =
+        "🍰 Cutting the cake...";
+
+    const knife =
+        document.getElementById("knife");
+
+    const cake =
+        document.getElementById("cake");
+
+    const piece =
+        document.getElementById("cakePiece");
+
+
+    knife.classList.add("cut-animation");
+
+
+    setTimeout(function() {
+
+        cake.classList.add("cake-cut");
+
+    }, 600);
+
+
+    setTimeout(function() {
+
+        piece.classList.add("move");
+
+    }, 1000);
+
+
+    setTimeout(function() {
+
+        document.getElementById("cakeMessage").textContent =
+            "🍰 Cake is served! 🎉";
+
+        createConfetti();
+
+        createBalloons();
+
+        createHearts();
+
+    }, 1600);
+
+
+    setTimeout(function() {
+
+        showFinalBirthday();
+
+    }, 3500);
+
+}
+
+
+/* ==================================================
+   FINAL BIRTHDAY
+================================================== */
+
+function showFinalBirthday() {
+
+    showScreen("finalScreen");
+
+    createConfetti();
+
+    createConfetti();
+
+    createBalloons();
+
+    createHearts();
+
+    typeBirthdayMessage();
+
+}
+
+
+/* ==================================================
+   TYPEWRITER
+================================================== */
+
+function typeBirthdayMessage() {
+
+    const message =
+        "Wishing you a wonderful birthday filled with happiness, laughter, beautiful memories and lots of cake! 🎂💗✨";
+
+    const target =
+        document.getElementById("birthdayMessage");
+
+    target.textContent = "";
+
+    let index = 0;
+
+    function typeNext() {
+
+        if (index < message.length) {
+
+            target.textContent += message.charAt(index);
+
+            index++;
+
+            setTimeout(typeNext, 45);
+
+        }
+
+    }
+
+    typeNext();
+
+}
+
+
+/* ==================================================
+   CONFETTI
+================================================== */
+
+function createConfetti() {
+
+    for (let i = 0; i < 100; i++) {
+
+        const piece =
+            document.createElement("div");
+
+        piece.className = "confetti";
+
+        piece.style.left =
+            Math.random() * 100 + "vw";
+
+        piece.style.background =
+            "hsl(" +
+            Math.random() * 360 +
+            ", 80%, 65%)";
+
+        piece.style.animationDuration =
+            (2 + Math.random() * 3) + "s";
+
+        piece.style.transform =
+            "rotate(" +
+            Math.random() * 360 +
+            "deg)";
+
+        document.body.appendChild(piece);
+
+
+        setTimeout(function() {
+
+            piece.remove();
+
+        }, 6000);
+
+    }
+
+}
+
+
+/* ==================================================
+   BALLOONS
+================================================== */
+
+function createBalloons() {
+
+    const balloons = [
+        "🎈",
+        "🎈",
+        "🎈",
+        "🎈",
+        "🎈",
+        "🎈",
+        "🎈",
+        "🎈"
+    ];
+
+    balloons.forEach(function(symbol, index) {
+
+        setTimeout(function() {
+
+            const balloon =
+                document.createElement("div");
+
+            balloon.className = "balloon";
+
+            balloon.textContent = symbol;
+
+            balloon.style.left =
+                Math.random() * 90 + "vw";
+
+            balloon.style.animationDuration =
+                (5 + Math.random() * 3) + "s";
+
+            document.body.appendChild(balloon);
+
+
+            setTimeout(function() {
+
+                balloon.remove();
+
+            }, 9000);
+
+        }, index * 250);
+
+    });
+
+}
+
+
+/* ==================================================
+   HEARTS
+================================================== */
+
+function createHearts() {
+
+    for (let i = 0; i < 25; i++) {
+
+        setTimeout(function() {
+
+            const heart =
+                document.createElement("div");
+
+            heart.className = "heart";
+
+            heart.textContent = "💗";
+
+            heart.style.left =
+                Math.random() * 100 + "vw";
+
+            heart.style.animationDuration =
+                (3 + Math.random() * 3) + "s";
+
+            document.body.appendChild(heart);
+
+
+            setTimeout(function() {
+
+                heart.remove();
+
+            }, 7000);
+
+        }, i * 120);
+
+    }
+
+}
+
+
+/* ==================================================
+   INITIALIZE
+================================================== */
+
+updatePage();
+
+</script>
+
+</body>
+</html>
