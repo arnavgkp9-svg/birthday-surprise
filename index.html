@@ -611,30 +611,85 @@ html, body {
 /* ==================================================
    FINALE TYPEWRITER (PAGE 10)
 ================================================== */
-.typewriter-box {
-    width: 90%;
-    min-height: 110px;
+.page-10-container {
+    width: 100%;
+    height: 100%;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    margin: 6px auto;
+    padding: 10px 4px 6px;
+    position: relative;
+    z-index: 2;
+}
+
+.page-10-header {
+    flex-shrink: 0;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.letter-parchment {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 340px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 14px;
+    padding: 14px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.12), 0 4px 16px rgba(100, 20, 50, 0.2);
+    overflow-y: auto;
+    max-height: 250px;
+    margin: 4px 0 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.4) transparent;
+}
+
+.letter-parchment::-webkit-scrollbar {
+    width: 4px;
+}
+
+.letter-parchment::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.4);
+    border-radius: 4px;
 }
 
 .typewriter-text {
-    font-size: clamp(14px, 2.7vw, 15.5px);
-    line-height: 1.65;
-    color: #fff0f6;
+    font-size: clamp(13px, 2.7vw, 14.5px);
+    line-height: 1.6;
+    color: #ffffff;
     font-family: 'Playfair Display', Georgia, serif;
+    text-shadow: 0 1px 4px rgba(80, 20, 50, 0.35);
+    margin: 0;
+    width: 100%;
+    word-break: break-word;
 }
 
 .cursor-blink {
     display: inline-block;
-    color: #ffe3ee;
-    font-weight: 300;
+    color: #ffd1e3;
+    font-weight: 400;
+    margin-left: 2px;
     animation: blink 0.75s infinite;
 }
 
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+.page-10-footer {
+    flex-shrink: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
 
 /* ==================================================
    CONTROLS BAR
@@ -1011,26 +1066,32 @@ html, body {
             <div class="filigree-frame" style="border-color: rgba(255,255,255,0.45);"></div>
             <div class="filigree-inner" style="border-color: rgba(255,255,255,0.25);"></div>
 
-            <div class="page-elem" style="font-size: 38px; margin-bottom: 2px;">💌💖</div>
-            <h2 class="page-elem font-cinzel" style="font-size: clamp(22px, 4.2vw, 32px); color: #fff; text-shadow: 0 3px 12px rgba(80, 20, 50, 0.4); margin-bottom: 4px;">
-                HAPPY BIRTHDAY, RIDDHI!
-            </h2>
+            <div class="page-10-container">
+                <div class="page-10-header page-elem">
+                    <span style="font-size: 32px; display: inline-block; line-height: 1;">💌💖</span>
+                    <h2 class="font-cinzel" style="font-size: clamp(19px, 4vw, 25px); color: #fff; text-shadow: 0 3px 12px rgba(80, 20, 50, 0.4); margin: 4px 0 0; line-height: 1.25;">
+                        To My Everything, Riddhi
+                    </h2>
+                </div>
 
-            <div class="page-elem typewriter-box">
-                <p class="typewriter-text font-playfair">
-                    <span id="finalTypewriter"></span>
-                    <span class="cursor-blink">|</span>
-                </p>
+                <div class="letter-parchment page-elem">
+                    <p class="typewriter-text font-playfair">
+                        <span id="finalTypewriter"></span>
+                        <span class="cursor-blink">|</span>
+                    </p>
+                </div>
+
+                <div class="page-10-footer page-elem">
+                    <div class="love-tag" style="background: rgba(255,255,255,0.28); border: 1.5px solid rgba(255,255,255,0.65); color: #fff; font-size: 11.5px; padding: 5px 14px; text-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+                        FOREVER YOURS, I LOVE YOU RIDDHI 💗
+                    </div>
+
+                    <button class="main-btn" style="background: #ffffff; color: #a8295b; font-weight: 600; padding: 7px 18px; font-size: 12.5px; box-shadow: 0 6px 18px rgba(0,0,0,0.18);" onclick="replayCelebration()">
+                        Celebrate Again 🎉
+                    </button>
+                    <span style="font-size: 10.5px; color: rgba(255,255,255,0.85); letter-spacing: 0.5px; margin-top: 2px;">PAGE 10 OF 10 🎀</span>
+                </div>
             </div>
-
-            <div class="page-elem love-tag" style="background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.6); color: #fff; margin-top: 6px;">
-                FOREVER YOURS, I LOVE YOU SO MUCH RIDDHI 💗
-            </div>
-
-            <button class="page-elem main-btn" style="margin-top: 12px; background: #fff; color: #a8295b; font-weight: 600; padding: 10px 22px; font-size: 13.5px;" onclick="replayCelebration()">
-                Celebrate Again 🎉
-            </button>
-            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: rgba(255,255,255,0.75);">PAGE 10 OF 10 🎀</span>
         </div>
 
     </div>
