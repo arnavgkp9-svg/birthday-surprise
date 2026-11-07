@@ -13,7 +13,7 @@
 
 <style>
 /* ==================================================
-   GLOBAL STYLES & COLOR SYSTEM
+   GLOBAL THEME & RESETS
 ================================================== */
 * {
     box-sizing: border-box;
@@ -23,22 +23,21 @@
 }
 
 :root {
-    --book-w: min(880px, 94vw);
-    --book-h: min(650px, 86vh);
-    --leaf-w: calc(var(--book-w) / 2);
+    --page-w: min(420px, 90vw);
+    --page-h: min(640px, 80vh);
     --primary-pink: #d95c91;
     --primary-deep: #b3366c;
     --rose-gold: #df989a;
     --gold: #d8a053;
     --text-main: #4a1f33;
     --text-muted: #8b5268;
-    --paper-grad: radial-gradient(circle at 50% 25%, #ffffff 0%, #fffbfd 55%, #fdf0f6 100%);
-    --cover-grad: linear-gradient(135deg, #e77399 0%, #cb527c 50%, #b23b67 100%);
+    --paper-grad: radial-gradient(circle at 50% 25%, #ffffff 0%, #fffbfc 60%, #fdf0f6 100%);
+    --cover-grad: linear-gradient(145deg, #e77399 0%, #cb527c 45%, #b23b67 100%);
 }
 
 html, body {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     background: radial-gradient(circle at 50% 20%, #ffedf5 0%, #ffd4e6 50%, #f6c0d6 100%);
     font-family: 'Plus Jakarta Sans', Georgia, serif;
     color: var(--text-main);
@@ -53,7 +52,7 @@ html, body {
 .font-playfair { font-family: 'Playfair Display', Georgia, serif; }
 
 /* ==================================================
-   SCREEN SYSTEM
+   SCREENS
 ================================================== */
 .screen {
     width: 100vw;
@@ -80,7 +79,7 @@ html, body {
     color: white;
     padding: 13px 30px;
     border-radius: 30px;
-    font-size: 16px;
+    font-size: 15.5px;
     font-weight: 500;
     letter-spacing: 0.5px;
     cursor: pointer;
@@ -107,180 +106,145 @@ html, body {
 }
 
 /* ==================================================
-   WELCOME SCREEN
+   WELCOME MODAL
 ================================================== */
 .welcome-box {
-    width: min(600px, 92vw);
+    width: min(520px, 92vw);
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(14px);
-    padding: 44px 28px;
-    border-radius: 32px;
+    padding: 42px 26px;
+    border-radius: 30px;
     border: 3px solid #fbc9da;
     box-shadow: 0 25px 70px rgba(120, 35, 70, 0.2), inset 0 0 30px rgba(255, 225, 235, 0.6);
     text-align: center;
-    animation: welcomeAppear 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: welcomePop 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes welcomeAppear {
+@keyframes welcomePop {
     0% { opacity: 0; transform: scale(0.9) translateY(24px); }
     100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .welcome-box h1 {
-    font-size: clamp(32px, 7vw, 54px);
+    font-size: clamp(30px, 6.5vw, 46px);
     color: #6a173e;
     margin: 8px 0 14px;
     line-height: 1.25;
 }
 
 .welcome-box p {
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.6;
     color: var(--text-muted);
-    max-width: 460px;
-    margin: 0 auto 28px;
+    max-width: 420px;
+    margin: 0 auto 26px;
 }
 
 /* ==================================================
-   BOOK CONTAINER & 3D STAGE
+   SINGLE-PAGE BOOK STAGE
 ================================================== */
 .book-stage {
-    perspective: 2500px;
+    perspective: 2000px;
     perspective-origin: 50% 50%;
-    width: var(--book-w);
-    height: var(--book-h);
+    width: var(--page-w);
+    height: var(--page-h);
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.book-shadow {
+.book-pad-shadow {
     position: absolute;
-    width: 95%;
-    height: 40px;
-    bottom: -22px;
-    left: 2.5%;
-    background: radial-gradient(ellipse at center, rgba(80, 20, 50, 0.35) 0%, rgba(80, 20, 50, 0) 70%);
+    width: 96%;
+    height: 35px;
+    bottom: -18px;
+    left: 2%;
+    background: radial-gradient(ellipse at center, rgba(80, 20, 50, 0.35) 0%, rgba(80, 20, 50, 0) 72%);
     filter: blur(8px);
     z-index: 1;
 }
 
-.book-case {
-    position: absolute;
-    width: var(--book-w);
-    height: var(--book-h);
-    background: #eed3de;
-    border-radius: 22px;
-    box-shadow: 0 28px 75px rgba(80, 20, 50, 0.28), inset 0 0 25px rgba(255, 255, 255, 0.5);
-    z-index: 2;
-    overflow: hidden;
-    border: 7px solid #eec4d5;
-}
-
-.book-spine {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 32px;
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, 
-        rgba(0,0,0,0.18) 0%, 
-        rgba(0,0,0,0.03) 30%, 
-        rgba(255,255,255,0.45) 50%, 
-        rgba(0,0,0,0.03) 70%, 
-        rgba(0,0,0,0.18) 100%
-    );
-    z-index: 50;
-    pointer-events: none;
-}
-
-.leaf {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: var(--leaf-w);
-    height: 100%;
-    transform-origin: left center;
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
-    cursor: grab;
-    will-change: transform;
-    border-radius: 0 18px 18px 0;
-}
-
-.leaf:active {
-    cursor: grabbing;
-}
-
-.face {
+.book-pad-base {
     position: absolute;
     inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    background: #ebd2dd;
+    border-radius: 24px;
+    box-shadow: 0 24px 60px rgba(80, 20, 50, 0.25), inset 0 0 25px rgba(255, 255, 255, 0.45);
+    border: 5px solid #f3c9db;
+    z-index: 2;
+}
+
+/* Single Page Sheets Stack */
+.single-page {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: var(--paper-grad);
+    box-shadow: 0 10px 30px rgba(70, 20, 45, 0.15);
+    padding: 34px 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 35px 28px;
     text-align: center;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform, opacity;
+    cursor: grab;
     overflow: hidden;
 }
 
-.face.front {
-    background: var(--paper-grad);
-    border-radius: 0 16px 16px 0;
-    box-shadow: inset 20px 0 25px -15px rgba(0,0,0,0.08);
+.single-page:active {
+    cursor: grabbing;
 }
 
-.face.back {
-    transform: rotateY(180deg);
-    background: var(--paper-grad);
-    border-radius: 16px 0 0 16px;
-    box-shadow: inset -20px 0 25px -15px rgba(0,0,0,0.08);
-}
-
-.leaf[data-cover="front"] .face.front {
+.single-page.cover-front {
     background: var(--cover-grad);
-    border: 4px solid var(--rose-gold);
-    box-shadow: inset 0 0 35px rgba(0,0,0,0.2), inset 20px 0 25px -10px rgba(0,0,0,0.3);
+    border: 3.5px solid var(--rose-gold);
+    color: #fff;
+    box-shadow: 0 16px 40px rgba(110, 25, 60, 0.3), inset 0 0 35px rgba(0,0,0,0.2);
 }
 
-.leaf[data-cover="back"] .face.back {
+.single-page.cover-back {
     background: var(--cover-grad);
-    border: 4px solid var(--rose-gold);
-    box-shadow: inset 0 0 35px rgba(0,0,0,0.2), inset -20px 0 25px -10px rgba(0,0,0,0.3);
+    border: 3.5px solid var(--rose-gold);
+    color: #fff;
+    box-shadow: 0 16px 40px rgba(110, 25, 60, 0.3), inset 0 0 35px rgba(0,0,0,0.2);
 }
 
-.page-shade {
+.page-drag-shadow {
     position: absolute;
     inset: 0;
     pointer-events: none;
     opacity: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 45%, rgba(255,255,255,0.25) 50%, rgba(0,0,0,0) 80%);
-    transition: opacity 0.2s ease;
+    background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 35%, rgba(255,255,255,0.3) 50%, rgba(0,0,0,0) 80%);
     border-radius: inherit;
-    z-index: 40;
+    z-index: 50;
+    transition: opacity 0.1s ease;
 }
 
+/* Ornamental Frames */
 .filigree-frame {
     position: absolute;
-    inset: 14px;
+    inset: 12px;
     border: 1.5px solid rgba(216, 160, 83, 0.45);
-    border-radius: 12px;
+    border-radius: 14px;
     pointer-events: none;
 }
 
 .filigree-inner {
     position: absolute;
-    inset: 19px;
-    border: 1px dashed rgba(220, 100, 150, 0.25);
-    border-radius: 9px;
+    inset: 17px;
+    border: 1px dashed rgba(220, 100, 150, 0.28);
+    border-radius: 11px;
     pointer-events: none;
 }
 
-.corner-peel-hint {
+.corner-swipe-tag {
     position: absolute;
     bottom: 12px;
     right: 14px;
@@ -293,35 +257,36 @@ html, body {
     padding: 3px 10px;
     border-radius: 14px;
     pointer-events: none;
-    animation: gentlePulse 2s infinite ease-in-out;
+    animation: gentleWobble 2s infinite ease-in-out;
 }
 
-@keyframes gentlePulse {
-    0%, 100% { opacity: 0.7; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-2px); }
+@keyframes gentleWobble {
+    0%, 100% { opacity: 0.75; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(3px); }
 }
 
 /* ==================================================
-   DYNAMIC PAGE OPENING ENTRANCE ANIMATIONS
+   PAGE ELEMENTS CASCADE ANIMATIONS
 ================================================== */
 .page-elem {
     opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translateY(16px);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.face.is-revealed .page-elem {
+.single-page.is-revealed .page-elem {
     opacity: 1;
     transform: translateY(0);
 }
 
-.face.is-revealed .page-elem:nth-child(1) { transition-delay: 0.15s; }
-.face.is-revealed .page-elem:nth-child(2) { transition-delay: 0.3s; }
-.face.is-revealed .page-elem:nth-child(3) { transition-delay: 0.45s; }
-.face.is-revealed .page-elem:nth-child(4) { transition-delay: 0.6s; }
-.face.is-revealed .page-elem:nth-child(5) { transition-delay: 0.75s; }
+.single-page.is-revealed .page-elem:nth-child(1) { transition-delay: 0.1s; }
+.single-page.is-revealed .page-elem:nth-child(2) { transition-delay: 0.22s; }
+.single-page.is-revealed .page-elem:nth-child(3) { transition-delay: 0.34s; }
+.single-page.is-revealed .page-elem:nth-child(4) { transition-delay: 0.46s; }
+.single-page.is-revealed .page-elem:nth-child(5) { transition-delay: 0.58s; }
+.single-page.is-revealed .page-elem:nth-child(6) { transition-delay: 0.7s; }
 
-/* Page Content Styling */
+/* Page Content Typography & Badges */
 .badge-tag {
     display: inline-block;
     font-size: 11px;
@@ -330,37 +295,37 @@ html, body {
     font-weight: 600;
     color: #a44871;
     background: #ffe5f0;
-    padding: 4px 14px;
+    padding: 3px 12px;
     border-radius: 20px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     border: 1px solid rgba(220, 100, 150, 0.3);
 }
 
 .page-title {
-    font-size: clamp(22px, 3.8vw, 32px);
+    font-size: clamp(21px, 4.2vw, 29px);
     color: #631439;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     line-height: 1.25;
 }
 
 .quote-ribbon {
-    width: 90%;
-    background: rgba(255, 235, 244, 0.65);
-    border-left: 4px solid #e06d9b;
-    border-radius: 12px;
-    padding: 13px 18px;
-    margin: 10px auto;
+    width: 92%;
+    background: rgba(255, 235, 244, 0.7);
+    border-left: 3.5px solid #e06d9b;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 8px auto;
     font-style: italic;
-    font-size: clamp(14px, 2.5vw, 16px);
+    font-size: clamp(13px, 2.7vw, 15px);
     color: #5d203d;
-    line-height: 1.6;
+    line-height: 1.55;
 }
 
 .page-body {
-    font-size: clamp(14px, 2.4vw, 15.5px);
-    line-height: 1.7;
+    font-size: clamp(13.5px, 2.5vw, 15px);
+    line-height: 1.65;
     color: #492135;
-    max-width: 360px;
+    max-width: 320px;
     margin: 6px auto;
 }
 
@@ -369,45 +334,45 @@ html, body {
     background: linear-gradient(135deg, #ff82ab, #d8457c);
     color: white;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 1px;
-    padding: 6px 18px;
+    padding: 6px 16px;
     border-radius: 20px;
-    box-shadow: 0 4px 14px rgba(216, 69, 124, 0.35);
-    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(216, 69, 124, 0.3);
+    margin-top: 8px;
 }
 
 /* ==================================================
-   INTERACTIVE REASONS GRID (PAGE 5)
+   INTERACTIVE REASONS (PAGE 5)
 ================================================== */
 .reasons-container {
     display: flex;
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    max-width: 340px;
-    margin: 10px auto;
+    max-width: 320px;
+    margin: 8px auto;
 }
 
 .reason-card {
-    background: rgba(255, 240, 247, 0.9);
+    background: rgba(255, 240, 247, 0.92);
     border: 1px solid #f6b5cc;
-    border-radius: 12px;
-    padding: 10px 14px;
-    font-size: 13.5px;
+    border-radius: 11px;
+    padding: 9px 12px;
+    font-size: 13px;
     color: #57223b;
     cursor: pointer;
     text-align: left;
     display: flex;
     align-items: center;
-    gap: 10px;
-    transition: all 0.25s ease;
-    box-shadow: 0 3px 8px rgba(180, 50, 100, 0.08);
+    gap: 8px;
+    transition: all 0.22s ease;
+    box-shadow: 0 2px 7px rgba(180, 50, 100, 0.07);
 }
 
 .reason-card:hover {
     background: #fff;
-    transform: translateX(4px);
+    transform: translateX(3px);
     border-color: #e2729e;
 }
 
@@ -419,28 +384,28 @@ html, body {
 }
 
 /* ==================================================
-   INTERACTIVE COUPONS GRID (PAGE 7)
+   INTERACTIVE COUPONS (PAGE 7)
 ================================================== */
 .coupons-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    max-width: 350px;
-    margin: 12px auto;
+    max-width: 320px;
+    margin: 8px auto;
 }
 
 .coupon-ticket {
     background: #fff;
     border: 1.5px dashed #e886ab;
-    border-radius: 12px;
-    padding: 10px 8px;
-    font-size: 12.5px;
+    border-radius: 11px;
+    padding: 9px 7px;
+    font-size: 12px;
     color: #5c203a;
     cursor: pointer;
     position: relative;
-    box-shadow: 0 4px 12px rgba(180, 50, 100, 0.08);
-    transition: all 0.25s ease;
+    box-shadow: 0 3px 10px rgba(180, 50, 100, 0.07);
+    transition: all 0.22s ease;
 }
 
 .coupon-ticket:hover {
@@ -464,114 +429,113 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
-    font-size: 11px;
-    letter-spacing: 1px;
+    border-radius: 9px;
+    font-size: 10px;
+    letter-spacing: 0.8px;
 }
 
 /* ==================================================
-   PAGE 9: INTERACTIVE CAKE MINI-GAME
+   INTERACTIVE CAKE (PAGE 9)
 ================================================== */
 .cake-scene {
     position: relative;
-    width: 290px;
-    height: 220px;
-    margin: 8px auto;
+    width: 270px;
+    height: 200px;
+    margin: 6px auto;
 }
 
 .plate {
     position: absolute;
-    width: 250px;
-    height: 22px;
-    bottom: 8px;
+    width: 230px;
+    height: 20px;
+    bottom: 6px;
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(180deg, #f5f5f5 0%, #dbdbdb 100%);
     border-radius: 50%;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     z-index: 1;
 }
 
 .animated-cake {
     position: absolute;
-    width: 210px;
+    width: 190px;
     left: 50%;
-    bottom: 20px;
+    bottom: 16px;
     transform: translateX(-50%);
     z-index: 3;
 }
 
 .cake-bottom {
-    width: 210px;
-    height: 62px;
+    width: 190px;
+    height: 56px;
     background: linear-gradient(180deg, #e87b9f 0%, #d16287 100%);
-    border-radius: 14px 14px 22px 22px;
-    box-shadow: inset 0 -10px rgba(80, 20, 50, 0.15);
+    border-radius: 12px 12px 20px 20px;
+    box-shadow: inset 0 -8px rgba(80, 20, 50, 0.15);
 }
 
 .cake-middle {
-    width: 180px;
-    height: 48px;
-    margin: -8px auto 0;
+    width: 162px;
+    height: 42px;
+    margin: -7px auto 0;
     background: linear-gradient(180deg, #fbb8cd 0%, #f69cb7 100%);
-    border-radius: 12px;
+    border-radius: 10px;
     position: relative;
     z-index: 4;
 }
 
 .cake-top {
-    width: 185px;
-    height: 46px;
-    margin: 0 auto -10px;
+    width: 168px;
+    height: 40px;
+    margin: 0 auto -8px;
     background: #fff5f8;
     border-radius: 50%;
     position: relative;
     z-index: 5;
-    box-shadow: 0 6px #f1a3be;
+    box-shadow: 0 5px #f1a3be;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 12px;
     color: #b84370;
 }
 
 .candles-row {
     position: absolute;
-    width: 170px;
-    height: 75px;
+    width: 155px;
+    height: 68px;
     left: 50%;
-    bottom: 114px;
+    bottom: 102px;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     z-index: 12;
 }
 
 .candle-unit {
     position: relative;
-    width: 16px;
-    height: 60px;
+    width: 14px;
+    height: 54px;
 }
 
 .candle-unit .stick {
     position: absolute;
     bottom: 0;
-    width: 14px;
-    height: 48px;
-    left: 1px;
-    background: repeating-linear-gradient(45deg, #fff 0px, #fff 6px, #f282aa 6px, #f282aa 11px);
-    border-radius: 4px;
+    width: 13px;
+    height: 42px;
+    background: repeating-linear-gradient(45deg, #fff 0px, #fff 5px, #f282aa 5px, #f282aa 10px);
+    border-radius: 3px;
 }
 
 .candle-unit .flame {
     position: absolute;
-    top: -24px;
+    top: -20px;
     left: -4px;
-    font-size: 20px;
+    font-size: 18px;
     opacity: 0;
     transform: scale(0);
-    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
 .candle-unit.lit .flame {
@@ -581,91 +545,91 @@ html, body {
 }
 
 @keyframes flameDance {
-    0% { transform: scale(0.9) rotate(-6deg); filter: drop-shadow(0 0 5px #ffb32b); }
-    100% { transform: scale(1.15) rotate(6deg); filter: drop-shadow(0 0 12px #ff9e22); }
+    0% { transform: scale(0.9) rotate(-5deg); filter: drop-shadow(0 0 4px #ffb32b); }
+    100% { transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 10px #ff9e22); }
 }
 
-.candle-unit.wobble { animation: candleWobble 0.5s ease; }
+.candle-unit.wobble { animation: candleWobble 0.45s ease; }
 
 @keyframes candleWobble {
     0%, 100% { transform: rotate(0); }
-    25% { transform: rotate(-12deg); }
-    75% { transform: rotate(12deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
 }
 
 .cake-cut-anim {
-    animation: cakeSplit 1.1s ease forwards !important;
+    animation: cakeSplit 1s ease forwards !important;
 }
 
 @keyframes cakeSplit {
     0% { transform: translateX(-50%) rotate(0); }
-    100% { transform: translateX(-50%) translateX(-25px) rotate(-5deg); }
+    100% { transform: translateX(-50%) translateX(-20px) rotate(-4deg); }
 }
 
 .knife-obj {
     position: absolute;
     z-index: 25;
-    font-size: 44px;
-    top: 25px;
+    font-size: 38px;
+    top: 20px;
     left: 50%;
     opacity: 0;
-    transform: translateX(80px) rotate(-35deg);
+    transform: translateX(70px) rotate(-30deg);
     pointer-events: none;
 }
 
 .knife-obj.animate {
-    animation: knifeCutMotion 1.2s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+    animation: knifeCutMotion 1.1s cubic-bezier(0.45, 0, 0.55, 1) forwards;
 }
 
 @keyframes knifeCutMotion {
-    0% { transform: translateX(80px) translateY(0) rotate(-30deg); opacity: 0; }
-    25% { opacity: 1; transform: translateX(25px) translateY(20px) rotate(-55deg); }
-    65% { transform: translateX(-15px) translateY(70px) rotate(-75deg); }
-    100% { transform: translateX(-40px) translateY(95px) rotate(-85deg); opacity: 0; }
+    0% { transform: translateX(70px) translateY(0) rotate(-30deg); opacity: 0; }
+    25% { opacity: 1; transform: translateX(20px) translateY(18px) rotate(-50deg); }
+    65% { transform: translateX(-10px) translateY(65px) rotate(-70deg); }
+    100% { transform: translateX(-35px) translateY(85px) rotate(-80deg); opacity: 0; }
 }
 
 .cake-slice-obj {
     position: absolute;
     left: 50%;
-    bottom: 50px;
-    font-size: 50px;
+    bottom: 45px;
+    font-size: 42px;
     opacity: 0;
     z-index: 20;
     pointer-events: none;
 }
 
 .cake-slice-obj.animate {
-    animation: cakeSliceMove 1.4s ease forwards;
+    animation: cakeSliceMove 1.3s ease forwards;
 }
 
 @keyframes cakeSliceMove {
     0% { opacity: 0; transform: translateX(-50%); }
     25% { opacity: 1; }
-    100% { opacity: 1; transform: translateX(95px) translateY(-10px) rotate(14deg); }
+    100% { opacity: 1; transform: translateX(85px) translateY(-8px) rotate(12deg); }
 }
 
 /* ==================================================
-   PAGE 10: FINALE TYPEWRITER
+   FINALE TYPEWRITER (PAGE 10)
 ================================================== */
 .typewriter-box {
     width: 90%;
-    min-height: 120px;
+    min-height: 110px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 8px auto;
+    margin: 6px auto;
 }
 
 .typewriter-text {
-    font-size: clamp(15px, 2.6vw, 17px);
-    line-height: 1.7;
-    color: #4b1f34;
+    font-size: clamp(14px, 2.7vw, 15.5px);
+    line-height: 1.65;
+    color: #fff0f6;
     font-family: 'Playfair Display', Georgia, serif;
 }
 
 .cursor-blink {
     display: inline-block;
-    color: #d95c91;
+    color: #ffe3ee;
     font-weight: 300;
     animation: blink 0.75s infinite;
 }
@@ -677,13 +641,13 @@ html, body {
 ================================================== */
 .book-nav-bar {
     position: fixed;
-    bottom: 20px;
+    bottom: 18px;
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     z-index: 100;
 }
 
@@ -691,9 +655,9 @@ html, body {
     border: none;
     background: #e47ea4;
     color: white;
-    padding: 10px 22px;
+    padding: 10px 20px;
     border-radius: 25px;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 500;
     box-shadow: 0 4px 14px rgba(180, 60, 105, 0.28);
     cursor: pointer;
@@ -711,24 +675,24 @@ html, body {
 }
 
 .page-counter {
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     color: var(--text-muted);
     letter-spacing: 1px;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.85);
     padding: 6px 14px;
     border-radius: 16px;
     backdrop-filter: blur(8px);
 }
 
 /* ==================================================
-   FLOATING CONFETTI, HEARTS & BALLOONS
+   CONFETTI, HEARTS & BALLOONS
 ================================================== */
 .fx-confetti {
     position: fixed;
     top: -20px;
-    width: 10px;
-    height: 18px;
+    width: 9px;
+    height: 16px;
     border-radius: 3px;
     z-index: 120;
     animation: fxConfettiSpin 4.5s linear forwards;
@@ -742,7 +706,7 @@ html, body {
 .fx-heart {
     position: fixed;
     bottom: -35px;
-    font-size: 26px;
+    font-size: 24px;
     z-index: 110;
     animation: fxHeartDrift 5s linear forwards;
     pointer-events: none;
@@ -755,7 +719,7 @@ html, body {
 .fx-balloon {
     position: fixed;
     bottom: -100px;
-    font-size: 50px;
+    font-size: 46px;
     z-index: 110;
     animation: fxBalloonFloat 6s linear forwards;
     pointer-events: none;
@@ -764,37 +728,6 @@ html, body {
 @keyframes fxBalloonFloat {
     0% { transform: translateY(0) rotate(-6deg); opacity: 1; }
     100% { transform: translateY(-120vh) rotate(16deg); opacity: 0; }
-}
-
-/* ==================================================
-   MOBILE PORTRAIT ADJUSTMENTS
-================================================== */
-@media (max-width: 640px) {
-    :root {
-        --book-w: 94vw;
-        --book-h: 80vh;
-    }
-
-    .face {
-        padding: 24px 16px;
-    }
-
-    .quote-ribbon {
-        padding: 10px 14px;
-        margin: 6px auto;
-    }
-
-    .filigree-frame { inset: 8px; }
-    .filigree-inner { inset: 12px; }
-
-    .cake-scene {
-        transform: scale(0.85);
-        margin: 0 auto;
-    }
-
-    .book-spine {
-        width: 18px;
-    }
 }
 </style>
 </head>
@@ -806,323 +739,311 @@ html, body {
 ================================================== -->
 <section id="welcomeScreen" class="screen active">
     <div class="welcome-box">
-        <span style="font-size: 54px; display: inline-block; margin-bottom: 4px; filter: drop-shadow(0 4px 10px rgba(220,90,140,0.3));">👑✨</span>
+        <span style="font-size: 50px; display: inline-block; margin-bottom: 4px; filter: drop-shadow(0 4px 10px rgba(220,90,140,0.3));">👑✨</span>
         <h1 class="font-cinzel">For Riddhi 💕</h1>
         <p class="font-playfair">
-            A little book made of all my love, laughter, and the sweetest memories... made just for my baby on her special day.
+            A little single-card storybook filled with warm memories, secret reasons, and all my love... made specially for my baby girl.
         </p>
         <button class="main-btn" onclick="openStoryBook()">
-            Open Your Birthday Book, Baby 🎀
+            Open Your Book, Baby 🎀
         </button>
     </div>
 </section>
 
 <!-- ==================================================
-     SCREEN 2: 3D REALISTIC INTERACTIVE BOOK
+     SCREEN 2: SINGLE-PAGE VIEW FLIPBOOK
 ================================================== -->
 <section id="bookScreen" class="screen">
     <div class="book-stage" id="bookStage">
-        <div class="book-shadow"></div>
-        <div class="book-case"></div>
-        <div class="book-spine"></div>
+        <div class="book-pad-shadow"></div>
+        <div class="book-pad-base"></div>
 
-        <!-- LEAF 1: (Cover Front = Page 1 | Inside Left = Page 2) -->
-        <div class="leaf" id="leaf-0" data-cover="front" style="z-index: 5;">
-            <div class="page-shade" id="shade-front-0"></div>
+        <!-- 10 INDIVIDUAL PAGES (Single-Page View Stack) -->
 
-            <!-- PAGE 1: COVER -->
-            <div class="face front is-revealed" style="color: #fff;">
-                <div class="filigree-frame" style="border-color: rgba(255,255,255,0.4);"></div>
-                <div class="filigree-inner" style="border-color: rgba(255,255,255,0.25);"></div>
+        <!-- PAGE 1: COVER -->
+        <div class="single-page cover-front" id="page-0" style="z-index: 10;">
+            <div class="page-drag-shadow" id="shadow-0"></div>
+            <div class="filigree-frame" style="border-color: rgba(255,255,255,0.4);"></div>
+            <div class="filigree-inner" style="border-color: rgba(255,255,255,0.25);"></div>
 
-                <div class="page-elem" style="font-size: 44px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25)); margin-bottom: 6px;">👑</div>
-                <div class="page-elem badge-tag" style="background: rgba(255,255,255,0.25); color: #fff; border-color: rgba(255,255,255,0.5);">EDITION: FOR MY BABY</div>
-                <h1 class="page-elem font-cinzel" style="font-size: clamp(26px, 4.5vw, 42px); color: #fff; text-shadow: 0 3px 12px rgba(80, 20, 50, 0.4); margin: 8px 0 10px;">
-                    HAPPY BIRTHDAY<br><span class="font-script" style="font-size: clamp(38px, 6vw, 56px); color: #ffe3ee;">Riddhi</span> 💖
-                </h1>
-                <p class="page-elem font-playfair" style="font-size: 15px; color: #ffe6f0; max-width: 280px; margin: 4px auto 14px; font-style: italic;">
-                    "To the girl who stole my heart and made every single day feel magical."
-                </p>
-                <div class="page-elem love-tag">I LOVE YOU RIDDHI 💗</div>
-                <div class="corner-peel-hint">Swipe / Tap to turn ➔</div>
-            </div>
-
-            <!-- PAGE 2: WELCOME CHAPTER -->
-            <div class="face back">
-                <div class="filigree-frame"></div>
-                <div class="filigree-inner"></div>
-                <div class="page-shade" id="shade-back-0"></div>
-
-                <div class="page-elem badge-tag">CHAPTER 01</div>
-                <h2 class="page-elem page-title font-cinzel">My Sweetest Riddhi ✨</h2>
-                <div class="page-elem quote-ribbon font-playfair">
-                    "From the moment you walked into my life, everything turned brighter, softer, and so much sweeter."
-                </div>
-                <p class="page-elem page-body">
-                    Happy Birthday to my most favourite person in the entire world! Today is all about celebrating you—your gentle laugh, your kind eyes, and the warmth you bring everywhere you go.
-                </p>
-                <p class="page-elem page-body" style="font-weight: 500; color: #a13264; margin-top: 4px;">
-                    Turn the page, baby... I put together our memories and secrets just for you. 🌸
-                </p>
-                <span class="page-elem" style="position: absolute; bottom: 18px; font-size: 11px; color: #9c5775;">PAGE 2</span>
-            </div>
+            <div class="page-elem" style="font-size: 42px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25)); margin-bottom: 6px;">👑</div>
+            <div class="page-elem badge-tag" style="background: rgba(255,255,255,0.25); color: #fff; border-color: rgba(255,255,255,0.5);">FOR MY PRINCESS</div>
+            <h1 class="page-elem font-cinzel" style="font-size: clamp(24px, 4.6vw, 34px); color: #fff; text-shadow: 0 3px 12px rgba(80, 20, 50, 0.4); margin: 6px 0 8px;">
+                HAPPY BIRTHDAY<br><span class="font-script" style="font-size: clamp(38px, 6.5vw, 52px); color: #ffe3ee;">Baby Riddhi</span> 💖
+            </h1>
+            <p class="page-elem font-playfair" style="font-size: 14.5px; color: #ffe6f0; max-width: 270px; margin: 4px auto 12px; font-style: italic;">
+                "To the girl who stole my heart and makes every single day feel magical."
+            </p>
+            <div class="page-elem love-tag">I LOVE YOU RIDDHI 💗</div>
+            <div class="corner-swipe-tag">Swipe / Tap ➔</div>
         </div>
 
-        <!-- LEAF 2: (Front = Page 3 | Back = Page 4) -->
-        <div class="leaf" id="leaf-1" style="z-index: 4;">
-            <div class="page-shade" id="shade-front-1"></div>
+        <!-- PAGE 2: WELCOME CHAPTER -->
+        <div class="single-page" id="page-1" style="z-index: 9;">
+            <div class="page-drag-shadow" id="shadow-1"></div>
+            <div class="filigree-frame"></div>
+            <div class="filigree-inner"></div>
 
-            <!-- PAGE 3: ROMANTIC MEMORY -->
-            <div class="face front">
-                <div class="filigree-frame"></div>
-                <div class="filigree-inner"></div>
-
-                <div class="page-elem badge-tag">CHAPTER 02</div>
-                <h2 class="page-elem page-title font-cinzel">My World Got Sweeter 🌷</h2>
-                <div class="page-elem quote-ribbon font-playfair">
-                    "I still remember the first time you smiled at me... my heart knew right then that you were home."
-                </div>
-                <p class="page-elem page-body">
-                    Riddhi, you have this crazy superpower where just one text from you or hearing your voice can erase a whole day of stress.
-                </p>
-                <p class="page-elem page-body">
-                    Being with you feels like drinking warm hot chocolate on a cold winter night. Comfortable, comforting, and full of sweetness.
-                </p>
-                <div class="page-elem" style="margin-top: 6px; font-size: 22px;">🧸💌✨</div>
-                <span class="page-elem" style="position: absolute; bottom: 18px; font-size: 11px; color: #9c5775;">PAGE 3</span>
-                <div class="corner-peel-hint">Turn ➔</div>
+            <div class="page-elem badge-tag">PAGE 02</div>
+            <h2 class="page-elem page-title font-cinzel">My Sweetest Riddhi ✨</h2>
+            <div class="page-elem quote-ribbon font-playfair">
+                "From the moment you walked into my life, everything turned brighter, softer, and so much sweeter."
             </div>
-
-            <!-- PAGE 4: WHY YOU ARE SPECIAL -->
-            <div class="face back">
-                <div class="filigree-frame"></div>
-                <div class="filigree-inner"></div>
-                <div class="page-shade" id="shade-back-1"></div>
-
-                <div class="page-elem badge-tag">CHAPTER 03</div>
-                <h2 class="page-elem page-title font-cinzel">Why You're My Baby 🎀</h2>
-                <div class="page-elem quote-ribbon font-playfair">
-                    "It's the tiny, little things you do without even realizing..."
-                </div>
-                <p class="page-elem page-body">
-                    The way you get excited over small cute things, the way you pout when you are pretending to be annoyed, and how genuinely you care for the people you love.
-                </p>
-                <p class="page-elem page-body">
-                    You aren't just beautiful on the outside, Riddhi—your heart is pure gold.
-                </p>
-                <div class="page-elem love-tag" style="font-size: 12px;">You Are So Precious To Me 💕</div>
-                <span class="page-elem" style="position: absolute; bottom: 18px; font-size: 11px; color: #9c5775;">PAGE 4</span>
-            </div>
+            <p class="page-elem page-body">
+                Happy Birthday to my most favourite person in the entire world! Today is all about celebrating you—your gentle laugh, your kind eyes, and the warmth you bring everywhere you go.
+            </p>
+            <p class="page-elem page-body" style="font-weight: 500; color: #a13264; margin-top: 4px;">
+                Swipe to turn the page, baby... our story is waiting. 🌸
+            </p>
+            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: #9c5775;">PAGE 2 OF 10</span>
+            <div class="corner-swipe-tag">Swipe ➔</div>
         </div>
 
-        <!-- LEAF 3: (Front = Page 5 | Back = Page 6) -->
-        <div class="leaf" id="leaf-2" style="z-index: 3;">
-            <div class="page-shade" id="shade-front-2"></div>
+        <!-- PAGE 3: THE DAY MY WORLD CHANGED -->
+        <div class="single-page" id="page-2" style="z-index: 8;">
+            <div class="page-drag-shadow" id="shadow-2"></div>
+            <div class="filigree-frame"></div>
+            <div class="filigree-inner"></div>
 
-            <!-- PAGE 5: INTERACTIVE REASONS I LOVE YOU -->
-            <div class="face front">
-                <div class="filigree-frame"></div>
-                <div class="filigree-inner"></div>
-
-                <div class="page-elem badge-tag">CHAPTER 04</div>
-                <h2 class="page-elem page-title font-cinzel">Why I Love You, Riddhi 💖</h2>
-                <p class="page-elem" style="font-size: 12px; color: #9b5172; margin-bottom: 6px;">
-                    (Tap each note below to uncover my secrets!)
-                </p>
-
-                <div class="page-elem reasons-container">
-                    <div class="reason-card" onclick="revealReason(this, 'Your cute laugh that makes my whole stomach flutter 🦋')">
-                        <span>💌</span> <span>Reason #1: Tap to reveal...</span>
-                    </div>
-                    <div class="reason-card" onclick="revealReason(this, 'The sweetest hugs in the universe that melt everything away 🫂')">
-                        <span>💌</span> <span>Reason #2: Tap to reveal...</span>
-                    </div>
-                    <div class="reason-card" onclick="revealReason(this, 'How adorable you look whenever you are sleepy or laughing 🥹')">
-                        <span>💌</span> <span>Reason #3: Tap to reveal...</span>
-                    </div>
-                </div>
-
-                <p class="page-elem font-script" style="font-size: 26px; color: #bf346b; margin-top: 4px;">
-                    ...and a million more reasons every day!
-                </p>
-                <span class="page-elem" style="position: absolute; bottom: 18px; font-size: 11px; color: #9c5775;">PAGE 5</span>
-                <div class="corner-peel-hint">Turn ➔</div>
+            <div class="page-elem badge-tag">PAGE 03</div>
+            <h2 class="page-elem page-title font-cinzel">The Day My World Changed 🌸</h2>
+            <div class="page-elem quote-ribbon font-playfair">
+                "I still remember the first time you smiled at me... my heart knew right then that you were home."
             </div>
-
-            <!-- PAGE 6: OUR LITTLE MOMENTS -->
-            <div class="face back">
-                <div class="filigree-frame"></div>
-                <div class="filigree-inner"></div>
-                <div class="page-shade" id="shade-back-2"></div>
-
-                <div class="page-elem badge-tag">CHAPTER 05</div>
-                <h2 class="page-elem page-title font-cinzel">Our Little Moments 🌙</h2>
-                <div class="page-elem quote-ribbon font-playfair">
-                    "Late night talks, teasing each other, sharing our dreams, and simply existing together..."
-                </div>
-                <p class="page-elem page-body">
-                    With you, even doing absolutely nothing feels like the best plan ever. Thank you for being my girlfriend, my best friend, and my safe sanctuary.
-                </p>
-                <div class="page-elem love-tag" style="background: linear-gradient(135deg, #d8457c, #aa2259); margin-top: 8px;">
-                    I LOVE YOU RIDDHI, ALWAYS ❤️
-                </div>
-                <span class="page-elem" style="position: absolute; bottom: 18px; font-size: 11px; color: #9c5775;">PAGE 6</span>
-            </div>
+            <p class="page-elem page-body">
+                Riddhi, meeting you was the sweetest thing that has ever happened to me. You made the ordinary world feel extraordinary.
+            </p>
+            <p class="page-elem page-body">
+                Being with you feels like drinking warm hot chocolate on a cold winter night. Comfortable, comforting, and full of sweetness.
+            </p>
+            <div class="page-elem" style="margin-top: 6px; font-size: 22px;">🧸💌✨</div>
+            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: #9c5775;">PAGE 3 OF 10</span>
+            <div class="corner-swipe-tag">Swipe ➔</div>
         </div>
 
-        <!-- LEAF 4: (Front = Page 7 | Back = Page 8) -->
-        <div class="leaf" id="leaf-3" style="z-index: 2;">
-            <div class="page-shade" id="shade-front-3"></div>
+        <!-- PAGE 4: YOUR SMILE IS MY HOME -->
+        <div class="single-page" id="page-3" style="z-index: 7;">
+            <div class="page-drag-shadow" id="shadow-3"></div>
+            <div class="filigree-frame"></div>
+            <div class="filigree-inner"></div>
 
-            <!-- PAGE 7: INTERACTIVE COUPONS -->
-            <div class="face front">
-                <div class="filigree-frame"></div>
-                <div class="filigree-inner"></div>
-
-                <div class="page-elem badge-tag">CHAPTER 06</div>
-                <h2 class="page-elem page-title font-cinzel">Coupons for Riddhi 🎟️</h2>
-                <p class="page-elem" style="font-size: 12px; color: #9b5172; margin-bottom: 6px;">
-                    (Tap any coupon to redeem it on me anytime!)
-                </p>
-
-                <div class="page-elem coupons-grid">
-                    <div class="coupon-ticket" onclick="redeemCoupon(this)">
-                        <strong>Infinite Hugs</strong><br>Unlimited tight cuddles whenever requested 🤗
-                    </div>
-                    <div class="coupon-ticket" onclick="redeemCoupon(this)">
-                        <strong>Win Any Argument</strong><br>Valid anytime Riddhi wants to be right 👑
-                    </div>
-                    <div class="coupon-ticket" onclick="redeemCoupon(this)">
-                        <strong>Midnight Ice Cream</strong><br>Late night dessert run on demand 🍦
-                    </div>
-                    <div class="coupon-ticket" onclick="redeemCoupon(this)">
-                        <strong>Princess Day</strong><br>Pampering, head scratches & all princess treats 💆‍♀️
-                    </div>
-                </div>
-
-                <span class="page-elem" style="position: absolute; bottom: 18px; font-size: 11px; color: #9c5775;">PAGE 7</span>
-                <div class="corner-peel-hint">Turn ➔</div>
+            <div class="page-elem badge-tag">PAGE 04</div>
+            <h2 class="page-elem page-title font-cinzel">Your Smile Is My Home 🏡</h2>
+            <div class="page-elem quote-ribbon font-playfair">
+                "It's the tiny, little things you do without even realizing..."
             </div>
-
-            <!-- PAGE 8: MY FOREVER PROMISE -->
-            <div class="face back">
-                <div class="filigree-frame"></div>
-                <div class="filigree-inner"></div>
-                <div class="page-shade" id="shade-back-3"></div>
-
-                <div class="page-elem badge-tag">CHAPTER 07</div>
-                <h2 class="page-elem page-title font-cinzel">My Forever Promise 💍</h2>
-                <div class="page-elem quote-ribbon font-playfair">
-                    "I promise to always hold your hand, make you laugh when you're sad, and love you a little more each morning."
-                </div>
-                <p class="page-elem page-body">
-                    Riddhi, as you blow out your candles this year, know that having you in my life is the greatest blessing I could ever ask for.
-                </p>
-                <p class="page-elem font-script" style="font-size: 32px; color: #b82b61; margin-top: 10px;">
-                    I love you more than words can say. 💕
-                </p>
-                <span class="page-elem" style="position: absolute; bottom: 18px; font-size: 11px; color: #9c5775;">PAGE 8</span>
-            </div>
+            <p class="page-elem page-body">
+                The way you get excited over cute little things, the way you pout when you pretend to be annoyed, and how genuinely you care for everyone around you.
+            </p>
+            <p class="page-elem page-body">
+                You aren't just beautiful on the outside, Riddhi—your heart is pure gold.
+            </p>
+            <div class="page-elem love-tag" style="font-size: 12px;">You Are So Precious To Me 💕</div>
+            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: #9c5775;">PAGE 4 OF 10</span>
+            <div class="corner-swipe-tag">Swipe ➔</div>
         </div>
 
-        <!-- LEAF 5: (Front = Page 9 Cake | Back = Page 10 Finale) -->
-        <div class="leaf" id="leaf-4" data-cover="back" style="z-index: 1;">
-            <div class="page-shade" id="shade-front-4"></div>
+        <!-- PAGE 5: WHY I LOVE YOU (INTERACTIVE) -->
+        <div class="single-page" id="page-4" style="z-index: 6;">
+            <div class="page-drag-shadow" id="shadow-4"></div>
+            <div class="filigree-frame"></div>
+            <div class="filigree-inner"></div>
 
-            <!-- PAGE 9: INTERACTIVE BIRTHDAY CAKE -->
-            <div class="face front">
-                <div class="filigree-frame"></div>
-                <div class="filigree-inner"></div>
+            <div class="page-elem badge-tag">PAGE 05</div>
+            <h2 class="page-elem page-title font-cinzel">Why I Love You, Riddhi 💕</h2>
+            <p class="page-elem" style="font-size: 12px; color: #9b5172; margin-bottom: 6px;">
+                (Tap each card below to uncover my secrets!)
+            </p>
 
-                <div class="page-elem badge-tag">CHAPTER 08</div>
-                <h2 class="page-elem page-title font-cinzel" style="margin-bottom: 2px;">Make A Wish, Riddhi! 🎂</h2>
-                <p class="page-elem" id="cakeInstruction" style="font-size: 13px; color: #93466a;">
-                    Light the candles on your cake, baby! ✨
-                </p>
-
-                <!-- Interactive Cake Scene -->
-                <div class="page-elem cake-scene">
-                    <div id="knifeObj" class="knife-obj">🔪</div>
-                    <div id="cakeSliceObj" class="cake-slice-obj">🍰</div>
-
-                    <!-- 5 Romantic Candles -->
-                    <div id="candlesRow" class="candles-row">
-                        <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
-                        <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
-                        <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
-                        <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
-                        <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
-                    </div>
-
-                    <!-- Tiered Cake -->
-                    <div id="cakeObj" class="animated-cake">
-                        <div class="cake-top font-script">For Riddhi 💖</div>
-                        <div class="cake-middle"></div>
-                        <div class="cake-bottom"></div>
-                        <div class="plate"></div>
-                    </div>
+            <div class="page-elem reasons-container">
+                <div class="reason-card" onclick="revealReason(this, 'Your cute laugh that makes my whole stomach flutter 🦋')">
+                    <span>💌</span> <span>Reason #1: Tap to reveal...</span>
                 </div>
-
-                <!-- Cake Controls -->
-                <div class="page-elem" style="margin-top: 4px;">
-                    <button id="btnLight" class="main-btn" style="padding: 9px 20px; font-size: 13.5px;" onclick="lightCandlesAction()">
-                        🔥 Light Candles
-                    </button>
-                    <button id="btnWish" class="main-btn hidden" style="padding: 9px 20px; font-size: 13.5px;" onclick="makeWishAction()">
-                        ✨ Make A Wish, Baby
-                    </button>
-                    <button id="btnBlow" class="main-btn hidden" style="padding: 9px 20px; font-size: 13.5px;" onclick="blowCandlesAction()">
-                        💨 Blow Out The Candles
-                    </button>
-                    <button id="btnCut" class="main-btn hidden" style="padding: 9px 20px; font-size: 13.5px;" onclick="cutCakeAction()">
-                        🔪 Cut Your Cake, Riddhi!
-                    </button>
+                <div class="reason-card" onclick="revealReason(this, 'The sweetest hugs in the universe that melt everything away 🫂')">
+                    <span>💌</span> <span>Reason #2: Tap to reveal...</span>
                 </div>
-
-                <span class="page-elem" style="position: absolute; bottom: 18px; font-size: 11px; color: #9c5775;">PAGE 9</span>
-                <div class="corner-peel-hint">Turn ➔</div>
+                <div class="reason-card" onclick="revealReason(this, 'How adorable you look whenever you are sleepy or laughing 🥹')">
+                    <span>💌</span> <span>Reason #3: Tap to reveal...</span>
+                </div>
             </div>
 
-            <!-- PAGE 10: BACK COVER & TYPEWRITER FINALE -->
-            <div class="face back" style="color: #fff;">
-                <div class="filigree-frame" style="border-color: rgba(255,255,255,0.45);"></div>
-                <div class="filigree-inner" style="border-color: rgba(255,255,255,0.25);"></div>
-                <div class="page-shade" id="shade-back-4"></div>
+            <p class="page-elem font-script" style="font-size: 24px; color: #bf346b; margin-top: 4px;">
+                ...and a million more reasons every day!
+            </p>
+            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: #9c5775;">PAGE 5 OF 10</span>
+            <div class="corner-swipe-tag">Swipe ➔</div>
+        </div>
 
-                <div class="page-elem" style="font-size: 40px; margin-bottom: 4px;">💌💖</div>
-                <h2 class="page-elem font-cinzel" style="font-size: clamp(24px, 4.2vw, 36px); color: #fff; text-shadow: 0 3px 12px rgba(80, 20, 50, 0.4); margin-bottom: 6px;">
-                    HAPPY BIRTHDAY, RIDDHI!
-                </h2>
+        <!-- PAGE 6: LITTLE MOMENTS WITH YOU -->
+        <div class="single-page" id="page-5" style="z-index: 5;">
+            <div class="page-drag-shadow" id="shadow-5"></div>
+            <div class="filigree-frame"></div>
+            <div class="filigree-inner"></div>
 
-                <div class="page-elem typewriter-box">
-                    <p class="typewriter-text font-playfair" style="color: #fff0f6;">
-                        <span id="finalTypewriter"></span>
-                        <span class="cursor-blink">|</span>
-                    </p>
+            <div class="page-elem badge-tag">PAGE 06</div>
+            <h2 class="page-elem page-title font-cinzel">Little Moments With You ☕</h2>
+            <div class="page-elem quote-ribbon font-playfair">
+                "Late night talks, teasing each other, sharing our dreams, and simply existing together..."
+            </div>
+            <p class="page-elem page-body">
+                With you, even doing absolutely nothing feels like the best plan ever. Thank you for being my girlfriend, my best friend, and my safe sanctuary.
+            </p>
+            <div class="page-elem love-tag" style="background: linear-gradient(135deg, #d8457c, #aa2259); margin-top: 6px;">
+                I LOVE YOU RIDDHI, ALWAYS ❤️
+            </div>
+            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: #9c5775;">PAGE 6 OF 10</span>
+            <div class="corner-swipe-tag">Swipe ➔</div>
+        </div>
+
+        <!-- PAGE 7: GIRLFRIEND COUPONS (INTERACTIVE) -->
+        <div class="single-page" id="page-6" style="z-index: 4;">
+            <div class="page-drag-shadow" id="shadow-6"></div>
+            <div class="filigree-frame"></div>
+            <div class="filigree-inner"></div>
+
+            <div class="page-elem badge-tag">PAGE 07</div>
+            <h2 class="page-elem page-title font-cinzel">Special Coupons For Riddhi 🎟️</h2>
+            <p class="page-elem" style="font-size: 12px; color: #9b5172; margin-bottom: 4px;">
+                (Tap any coupon to redeem it on me anytime!)
+            </p>
+
+            <div class="page-elem coupons-grid">
+                <div class="coupon-ticket" onclick="redeemCoupon(this)">
+                    <strong>Infinite Hugs</strong><br>Unlimited tight cuddles whenever requested 🤗
+                </div>
+                <div class="coupon-ticket" onclick="redeemCoupon(this)">
+                    <strong>Win Any Argument</strong><br>Valid anytime Riddhi wants to be right 👑
+                </div>
+                <div class="coupon-ticket" onclick="redeemCoupon(this)">
+                    <strong>Midnight Ice Cream</strong><br>Late night dessert run on demand 🍦
+                </div>
+                <div class="coupon-ticket" onclick="redeemCoupon(this)">
+                    <strong>Princess Pampering</strong><br>Head scratches & all princess treats 💆‍♀️
+                </div>
+            </div>
+
+            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: #9c5775;">PAGE 7 OF 10</span>
+            <div class="corner-swipe-tag">Swipe ➔</div>
+        </div>
+
+        <!-- PAGE 8: A PROMISE TO YOU -->
+        <div class="single-page" id="page-7" style="z-index: 3;">
+            <div class="page-drag-shadow" id="shadow-7"></div>
+            <div class="filigree-frame"></div>
+            <div class="filigree-inner"></div>
+
+            <div class="page-elem badge-tag">PAGE 08</div>
+            <h2 class="page-elem page-title font-cinzel">A Promise To You 💍</h2>
+            <div class="page-elem quote-ribbon font-playfair">
+                "I promise to always hold your hand, make you laugh when you're sad, and love you a little more each morning."
+            </div>
+            <p class="page-elem page-body">
+                Riddhi, having you in my life is the greatest gift. You are my today, my tomorrow, and my happily ever after.
+            </p>
+            <div class="page-elem love-tag" style="font-size: 13px; margin-top: 6px;">
+                I LOVE YOU RIDDHI 💗
+            </div>
+            <p class="page-elem font-script" style="font-size: 28px; color: #b82b61; margin-top: 6px;">
+                Always & Forever, Baby. 💕
+            </p>
+            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: #9c5775;">PAGE 8 OF 10</span>
+            <div class="corner-swipe-tag">Swipe ➔</div>
+        </div>
+
+        <!-- PAGE 9: INTERACTIVE BIRTHDAY CAKE -->
+        <div class="single-page" id="page-8" style="z-index: 2;">
+            <div class="page-drag-shadow" id="shadow-8"></div>
+            <div class="filigree-frame"></div>
+            <div class="filigree-inner"></div>
+
+            <div class="page-elem badge-tag">PAGE 09</div>
+            <h2 class="page-elem page-title font-cinzel" style="margin-bottom: 2px;">Make A Wish, Riddhi! 🎂</h2>
+            <p class="page-elem" id="cakeInstruction" style="font-size: 12.5px; color: #93466a;">
+                Light the candles on your cake, baby! ✨
+            </p>
+
+            <!-- Cake Scene -->
+            <div class="page-elem cake-scene">
+                <div id="knifeObj" class="knife-obj">🔪</div>
+                <div id="cakeSliceObj" class="cake-slice-obj">🍰</div>
+
+                <!-- 5 Candles -->
+                <div id="candlesRow" class="candles-row">
+                    <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
+                    <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
+                    <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
+                    <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
+                    <div class="candle-unit"><div class="flame">🔥</div><div class="stick"></div></div>
                 </div>
 
-                <div class="page-elem love-tag" style="background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.6); color: #fff; margin-top: 8px;">
-                    FOREVER YOURS, I LOVE YOU RIDDHI 💗
+                <!-- Cake Structure -->
+                <div id="cakeObj" class="animated-cake">
+                    <div class="cake-top font-script">For Riddhi 💖</div>
+                    <div class="cake-middle"></div>
+                    <div class="cake-bottom"></div>
+                    <div class="plate"></div>
                 </div>
+            </div>
 
-                <button class="page-elem main-btn" style="margin-top: 14px; background: #fff; color: #a8295b; font-weight: 600;" onclick="replayCelebration()">
-                    Celebrate Again 🎉
+            <!-- Cake Buttons -->
+            <div class="page-elem" style="margin-top: 2px;">
+                <button id="btnLight" class="main-btn" style="padding: 8px 18px; font-size: 13px;" onclick="lightCandlesAction()">
+                    🔥 Light Candles
                 </button>
-                <span class="page-elem" style="position: absolute; bottom: 18px; font-size: 11px; color: rgba(255,255,255,0.7);">THE END 🎀</span>
+                <button id="btnWish" class="main-btn hidden" style="padding: 8px 18px; font-size: 13px;" onclick="makeWishAction()">
+                    ✨ Make A Wish, Baby
+                </button>
+                <button id="btnBlow" class="main-btn hidden" style="padding: 8px 18px; font-size: 13px;" onclick="blowCandlesAction()">
+                    💨 Blow Out The Candles
+                </button>
+                <button id="btnCut" class="main-btn hidden" style="padding: 8px 18px; font-size: 13px;" onclick="cutCakeAction()">
+                    🔪 Cut Your Cake, Riddhi!
+                </button>
             </div>
+
+            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: #9c5775;">PAGE 9 OF 10</span>
+            <div class="corner-swipe-tag">Swipe ➔</div>
+        </div>
+
+        <!-- PAGE 10: BACK COVER & TYPEWRITER FINALE -->
+        <div class="single-page cover-back" id="page-9" style="z-index: 1;">
+            <div class="page-drag-shadow" id="shadow-9"></div>
+            <div class="filigree-frame" style="border-color: rgba(255,255,255,0.45);"></div>
+            <div class="filigree-inner" style="border-color: rgba(255,255,255,0.25);"></div>
+
+            <div class="page-elem" style="font-size: 38px; margin-bottom: 2px;">💌💖</div>
+            <h2 class="page-elem font-cinzel" style="font-size: clamp(22px, 4.2vw, 32px); color: #fff; text-shadow: 0 3px 12px rgba(80, 20, 50, 0.4); margin-bottom: 4px;">
+                HAPPY BIRTHDAY, RIDDHI!
+            </h2>
+
+            <div class="page-elem typewriter-box">
+                <p class="typewriter-text font-playfair">
+                    <span id="finalTypewriter"></span>
+                    <span class="cursor-blink">|</span>
+                </p>
+            </div>
+
+            <div class="page-elem love-tag" style="background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.6); color: #fff; margin-top: 6px;">
+                FOREVER YOURS, I LOVE YOU SO MUCH RIDDHI 💗
+            </div>
+
+            <button class="page-elem main-btn" style="margin-top: 12px; background: #fff; color: #a8295b; font-weight: 600; padding: 10px 22px; font-size: 13.5px;" onclick="replayCelebration()">
+                Celebrate Again 🎉
+            </button>
+            <span class="page-elem" style="position: absolute; bottom: 16px; font-size: 11px; color: rgba(255,255,255,0.75);">PAGE 10 OF 10 🎀</span>
         </div>
 
     </div>
 
-    <!-- Navigation Control Bar -->
+    <!-- Bottom Navigation Bar -->
     <div class="book-nav-bar">
-        <button id="prevBtn" class="nav-pill-btn" onclick="prevLeafAction()" disabled>
+        <button id="prevBtn" class="nav-pill-btn" onclick="prevPageAction()" disabled>
             ← Previous
         </button>
         <span id="pageIndicator" class="page-counter">
             Page 1 / 10
         </span>
-        <button id="nextBtn" class="nav-pill-btn" onclick="nextLeafAction()">
+        <button id="nextBtn" class="nav-pill-btn" onclick="nextPageAction()">
             Next Page →
         </button>
     </div>
@@ -1132,14 +1053,14 @@ html, body {
 /* ==================================================
    STATE & CONSTANTS
 ================================================== */
-const TOTAL_LEAVES = 5;
-let currentLeaf = 0; // 0 to TOTAL_LEAVES
+const TOTAL_PAGES = 10;
+let currentPage = 0; // 0 to 9
 let isDragging = false;
 let startX = 0;
-let dragAngle = 0;
-let activeDragLeaf = null;
+let dragDeltaX = 0;
+let activeDragPage = null;
 
-const leaves = Array.from({ length: TOTAL_LEAVES }, (_, i) => document.getElementById(`leaf-${i}`));
+const pages = Array.from({ length: TOTAL_PAGES }, (_, i) => document.getElementById(`page-${i}`));
 
 /* ==================================================
    SCREEN SWITCHER
@@ -1147,51 +1068,52 @@ const leaves = Array.from({ length: TOTAL_LEAVES }, (_, i) => document.getElemen
 function openStoryBook() {
     document.getElementById("welcomeScreen").classList.remove("active");
     document.getElementById("bookScreen").classList.add("active");
-    updateNavControls();
-    revealPageElements(leaves[0].querySelector(".face.front"));
+    updatePageStack();
+    revealElements(pages[0]);
 }
 
 /* ==================================================
-   LEAF ROTATION & DEPTH SYSTEM
+   SINGLE-PAGE STACK ENGINE
 ================================================== */
-function updateBookLayers() {
-    leaves.forEach((leaf, idx) => {
-        const shadeFront = document.getElementById(`shade-front-${idx}`);
-        const shadeBack = document.getElementById(`shade-back-${idx}`);
+function updatePageStack() {
+    pages.forEach((page, idx) => {
+        const shadow = document.getElementById(`shadow-${idx}`);
 
-        if (idx < currentLeaf) {
-            // Turned to the left
-            leaf.style.transition = "transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), z-index 0.3s ease";
-            leaf.style.transform = "rotateY(-180deg)";
-            leaf.style.zIndex = 10 + idx;
-            if (shadeFront) shadeFront.style.opacity = 0;
-            if (shadeBack) shadeBack.style.opacity = 0;
-            revealPageElements(leaf.querySelector(".face.back"));
-        } else if (idx === currentLeaf) {
-            // Currently on top right
-            leaf.style.transition = "transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), z-index 0.3s ease";
-            leaf.style.transform = "rotateY(0deg)";
-            leaf.style.zIndex = 20;
-            if (shadeFront) shadeFront.style.opacity = 0;
-            if (shadeBack) shadeBack.style.opacity = 0;
-            revealPageElements(leaf.querySelector(".face.front"));
+        if (idx < currentPage) {
+            // Turned and peeled away to the left
+            page.style.transition = "transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease";
+            page.style.transform = "rotateY(-140deg) translateX(-50px) scale(0.92)";
+            page.style.opacity = "0";
+            page.style.pointerEvents = "none";
+            page.style.zIndex = idx;
+            if (shadow) shadow.style.opacity = 0;
+        } else if (idx === currentPage) {
+            // Active current single page on top
+            page.style.transition = "transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease";
+            page.style.transform = "rotateY(0deg) translateX(0) scale(1)";
+            page.style.opacity = "1";
+            page.style.pointerEvents = "auto";
+            page.style.zIndex = 30;
+            if (shadow) shadow.style.opacity = 0;
+            revealElements(page);
         } else {
-            // Waiting to be turned on right side
-            leaf.style.transition = "transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), z-index 0.3s ease";
-            leaf.style.transform = "rotateY(0deg)";
-            leaf.style.zIndex = TOTAL_LEAVES - idx;
-            if (shadeFront) shadeFront.style.opacity = 0;
-            if (shadeBack) shadeBack.style.opacity = 0;
+            // Waiting underneath the active page
+            page.style.transition = "transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease";
+            page.style.transform = "rotateY(0deg) translateX(0) scale(0.98)";
+            page.style.opacity = (idx === currentPage + 1) ? "1" : "0";
+            page.style.pointerEvents = "none";
+            page.style.zIndex = TOTAL_PAGES - idx;
+            if (shadow) shadow.style.opacity = 0;
         }
     });
 
     updateNavControls();
 }
 
-function revealPageElements(faceElem) {
-    if (!faceElem) return;
-    faceElem.classList.add("is-revealed");
-    if (currentLeaf === TOTAL_LEAVES && faceElem.classList.contains("back")) {
+function revealElements(pageElem) {
+    if (!pageElem) return;
+    pageElem.classList.add("is-revealed");
+    if (currentPage === 9) {
         startTypewriter();
     }
 }
@@ -1201,30 +1123,27 @@ function updateNavControls() {
     const nextBtn = document.getElementById("nextBtn");
     const indicator = document.getElementById("pageIndicator");
 
-    prevBtn.disabled = (currentLeaf === 0);
-    nextBtn.disabled = (currentLeaf === TOTAL_LEAVES);
-
-    let displayPage = currentLeaf * 2 + 1;
-    if (displayPage > 10) displayPage = 10;
-    indicator.textContent = `Page ${displayPage} / 10`;
+    prevBtn.disabled = (currentPage === 0);
+    nextBtn.disabled = (currentPage === TOTAL_PAGES - 1);
+    indicator.textContent = `Page ${currentPage + 1} / ${TOTAL_PAGES}`;
 }
 
-function nextLeafAction() {
-    if (currentLeaf < TOTAL_LEAVES) {
-        currentLeaf++;
-        updateBookLayers();
+function nextPageAction() {
+    if (currentPage < TOTAL_PAGES - 1) {
+        currentPage++;
+        updatePageStack();
     }
 }
 
-function prevLeafAction() {
-    if (currentLeaf > 0) {
-        currentLeaf--;
-        updateBookLayers();
+function prevPageAction() {
+    if (currentPage > 0) {
+        currentPage--;
+        updatePageStack();
     }
 }
 
 /* ==================================================
-   1:1 TOUCH & DRAG PHYSICS ENGINE
+   1:1 REALISTIC TOUCH / DRAG PHYSICS
 ================================================== */
 const bookStage = document.getElementById("bookStage");
 
@@ -1237,81 +1156,65 @@ function startDrag(e) {
         return;
     }
     const x = getClientX(e);
-    const rect = bookStage.getBoundingClientRect();
-    const midX = rect.left + rect.width / 2;
-
-    if (x >= midX && currentLeaf < TOTAL_LEAVES) {
-        // Dragging top leaf forward
-        activeDragLeaf = leaves[currentLeaf];
-        activeDragLeaf.style.transition = "none";
-        activeDragLeaf.style.zIndex = 35;
-        isDragging = true;
-        startX = x;
-        dragAngle = 0;
-    } else if (x < midX && currentLeaf > 0) {
-        // Dragging turned leaf backward
-        activeDragLeaf = leaves[currentLeaf - 1];
-        activeDragLeaf.style.transition = "none";
-        activeDragLeaf.style.zIndex = 35;
-        isDragging = true;
-        startX = x;
-        dragAngle = -180;
+    isDragging = true;
+    startX = x;
+    dragDeltaX = 0;
+    activeDragPage = pages[currentPage];
+    if (activeDragPage) {
+        activeDragPage.style.transition = "none";
     }
 }
 
 function moveDrag(e) {
-    if (!isDragging || !activeDragLeaf) return;
+    if (!isDragging || !activeDragPage) return;
     const currentX = getClientX(e);
-    const deltaX = currentX - startX;
-    const leafWidth = bookStage.offsetWidth / 2;
-    const ratio = Math.max(-1.1, Math.min(1.1, deltaX / leafWidth));
+    dragDeltaX = currentX - startX;
+    const pageWidth = bookStage.offsetWidth;
 
-    const leafIndex = leaves.indexOf(activeDragLeaf);
-    const isForward = (leafIndex === currentLeaf);
+    if (dragDeltaX < 0 && currentPage < TOTAL_PAGES - 1) {
+        // Dragging left to turn to next page
+        const ratio = Math.max(-1, dragDeltaX / pageWidth);
+        const rotateAngle = ratio * 130;
+        const translateX = ratio * 40;
+        const scale = 1 - Math.abs(ratio) * 0.08;
 
-    if (isForward) {
-        // 0 to -180
-        dragAngle = Math.min(0, Math.max(-180, ratio * 180));
-    } else {
-        // -180 to 0
-        dragAngle = Math.min(0, Math.max(-180, -180 + ratio * 180));
-    }
+        activeDragPage.style.transform = `rotateY(${rotateAngle}deg) translateX(${translateX}px) scale(${scale})`;
 
-    activeDragLeaf.style.transform = `rotateY(${dragAngle}deg)`;
-
-    // Dynamic light/shadow physics
-    const shadeFront = document.getElementById(`shade-front-${leafIndex}`);
-    const shadeBack = document.getElementById(`shade-back-${leafIndex}`);
-    const progress = Math.abs(dragAngle) / 180;
-
-    if (dragAngle > -90) {
-        if (shadeFront) shadeFront.style.opacity = Math.sin(progress * Math.PI) * 0.4;
-    } else {
-        if (shadeBack) shadeBack.style.opacity = Math.sin(progress * Math.PI) * 0.4;
+        const shadow = document.getElementById(`shadow-${currentPage}`);
+        if (shadow) {
+            shadow.style.opacity = Math.min(0.5, Math.abs(ratio) * 0.6);
+        }
+    } else if (dragDeltaX > 0 && currentPage > 0) {
+        // Dragging right to peek previous page back
+        const prevPage = pages[currentPage - 1];
+        if (prevPage) {
+            prevPage.style.transition = "none";
+            prevPage.style.opacity = "1";
+            prevPage.style.zIndex = 35;
+            const ratio = Math.min(1, dragDeltaX / pageWidth);
+            const rotateAngle = -130 + ratio * 130;
+            const translateX = -40 + ratio * 40;
+            prevPage.style.transform = `rotateY(${rotateAngle}deg) translateX(${translateX}px)`;
+        }
     }
 }
 
 function endDrag() {
-    if (!isDragging || !activeDragLeaf) return;
+    if (!isDragging) return;
     isDragging = false;
-    const leafIndex = leaves.indexOf(activeDragLeaf);
-    const isForward = (leafIndex === currentLeaf);
+    const threshold = bookStage.offsetWidth * 0.28;
 
-    if (isForward) {
-        if (dragAngle < -40) {
-            currentLeaf++;
-        }
-    } else {
-        if (dragAngle > -140) {
-            currentLeaf--;
-        }
+    if (dragDeltaX < -threshold && currentPage < TOTAL_PAGES - 1) {
+        currentPage++;
+    } else if (dragDeltaX > threshold && currentPage > 0) {
+        currentPage--;
     }
 
-    activeDragLeaf = null;
-    updateBookLayers();
+    activeDragPage = null;
+    updatePageStack();
 }
 
-// Touch and pointer listeners
+// Touch & Pointer Listeners
 bookStage.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", moveDrag);
 window.addEventListener("mouseup", endDrag);
@@ -1320,10 +1223,10 @@ bookStage.addEventListener("touchstart", startDrag, { passive: true });
 window.addEventListener("touchmove", moveDrag, { passive: true });
 window.addEventListener("touchend", endDrag);
 
-// Keyboard arrows
+// Keyboard arrow keys
 window.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight") nextLeafAction();
-    if (e.key === "ArrowLeft") prevLeafAction();
+    if (e.key === "ArrowRight") nextPageAction();
+    if (e.key === "ArrowLeft") prevPageAction();
 });
 
 /* ==================================================
@@ -1344,14 +1247,14 @@ function redeemCoupon(el) {
 }
 
 /* ==================================================
-   CAKE MINI-GAME (PAGE 9)
+   INTERACTIVE CAKE MINI-GAME (PAGE 9)
 ================================================== */
 function lightCandlesAction() {
     const candles = document.querySelectorAll(".candle-unit");
     candles.forEach((c, i) => {
         setTimeout(() => {
             c.classList.add("lit");
-        }, i * 260);
+        }, i * 240);
     });
 
     document.getElementById("btnLight").classList.add("hidden");
@@ -1359,7 +1262,7 @@ function lightCandlesAction() {
 
     setTimeout(() => {
         document.getElementById("btnWish").classList.remove("hidden");
-    }, 1600);
+    }, 1500);
 }
 
 function makeWishAction() {
@@ -1377,11 +1280,11 @@ function blowCandlesAction() {
     candles.forEach((c, i) => {
         setTimeout(() => {
             c.classList.add("wobble");
-        }, i * 120);
+        }, i * 110);
 
         setTimeout(() => {
             c.classList.remove("lit");
-        }, 350 + i * 120);
+        }, 320 + i * 110);
     });
 
     document.getElementById("btnBlow").classList.add("hidden");
@@ -1410,19 +1313,18 @@ function cutCakeAction() {
 
     setTimeout(() => {
         slice.classList.add("animate");
-    }, 900);
+    }, 850);
 
     setTimeout(() => {
         document.getElementById("cakeInstruction").textContent = "Here is the sweetest slice for my baby! Enjoy! 🍓";
         burstConfetti(80);
         burstHearts(25);
         burstBalloons(10);
-    }, 1500);
+    }, 1400);
 
     setTimeout(() => {
-        // Gently invite to turn to finale
-        document.getElementById("cakeInstruction").textContent = "Turn to the final page for my love letter 💌➔";
-    }, 3200);
+        document.getElementById("cakeInstruction").textContent = "Swipe to the final page for my love letter 💌➔";
+    }, 3000);
 }
 
 /* ==================================================
@@ -1432,13 +1334,13 @@ let typewriterStarted = false;
 const loveLetterText = 
     "Dearest Riddhi,\n\n" +
     "Wishing you the happiest, warmest, and most magical birthday ever! Thank you for walking into my world and filling it with pure love, sunshine, and giggles.\n\n" +
-    "I promise to keep choosing you, loving you, and annoying you with love every single day.\n\n" +
+    "I promise to keep choosing you, loving you, and making you smile every single day.\n\n" +
     "Happy Birthday, my beautiful baby girl. I Love You endlessly! 🎂💖✨";
 
 function startTypewriter() {
     if (typewriterStarted) return;
     typewriterStarted = true;
-    burstConfetti(100);
+    burstConfetti(90);
     burstHearts(30);
     burstBalloons(12);
 
@@ -1462,9 +1364,9 @@ function startTypewriter() {
 }
 
 function replayCelebration() {
-    burstConfetti(100);
+    burstConfetti(90);
     burstHearts(30);
-    burstBalloons(14);
+    burstBalloons(12);
 }
 
 /* ==================================================
@@ -1513,8 +1415,8 @@ function burstBalloons(count = 8) {
     }
 }
 
-// Initial setup
-updateBookLayers();
+// Initial stack setup
+updatePageStack();
 </script>
 </body>
 </html>
